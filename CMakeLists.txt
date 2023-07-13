@@ -19,6 +19,18 @@ include_directories(${Vulkan_INCLUDE_DIRS})
 # Get all source files from the 'src' directory
 file(GLOB SOURCES src/*.c)
 
+# Check if GLFW submodule exists, and clone it if missing
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/CMakeLists.txt)
+    message(STATUS "GLFW submodule not found. Cloning the submodule...")
+    execute_process(COMMAND git submodule update --init external/glfw WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
+# Check if CGLM submodule exists, and clone it if missing
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/cglm/CMakeLists.txt)
+    message(STATUS "CGLM submodule not found. Cloning the submodule...")
+    execute_process(COMMAND git submodule update --init external/cglm WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
 # Add external libraries (GLFW and CGLM)
 add_subdirectory(external/glfw)
 add_subdirectory(external/cglm)
