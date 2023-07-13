@@ -4,9 +4,6 @@ project(VulkanTriangle)
 # Specify the C language standard
 set(CMAKE_C_STANDARD 11)
 
-# Add default compilation options (without -Wall and -Wextra)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g3")
-
 # Find Vulkan packages
 find_package(Vulkan REQUIRED)
 if(NOT Vulkan_FOUND)
@@ -39,7 +36,7 @@ add_subdirectory(external/cglm)
 add_executable(VulkanTriangle ${SOURCES})
 
 # Set compilation options for files in the 'src' directory (with warnings)
-set_source_files_properties(${SOURCES} PROPERTIES COMPILE_FLAGS "-Wall -Wextra")
+set_source_files_properties(${SOURCES} PROPERTIES COMPILE_FLAGS "-g3 -Wall -Wextra")
 
 # Link Vulkan, GLFW, and CGLM libraries to your executable
 target_link_libraries(VulkanTriangle ${Vulkan_LIBRARIES} glfw cglm)
