@@ -11,7 +11,7 @@ if(NOT Vulkan_FOUND)
 endif()
 
 # Include Vulkan header files
-include_directories(${Vulkan_INCLUDE_DIRS})
+include_directories(${Vulkan_INCLUDE_DIRS} / ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Get all source files from the 'src' directory
 file(GLOB SOURCES src/*.c)

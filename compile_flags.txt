@@ -1,2 +1,3 @@
 -I./external/cglm/include
 -I./external/glfw/include
+-I./include
