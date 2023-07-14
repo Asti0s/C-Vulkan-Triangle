@@ -15,11 +15,3 @@ int create_window (VKRenderer *renderer)
 
     return CReturnSuccess;
 }
-
-int init_renderer (VKRenderer *renderer)
-{
-    if (create_window(renderer) != CReturnSuccess)
-        return CReturnFailure;
-
-    return CReturnSuccess;
-}

@@ -10,11 +10,11 @@ if(NOT Vulkan_FOUND)
     message(FATAL_ERROR "Vulkan packages not found. Make sure Vulkan is correctly installed.")
 endif()
 
-# Include Vulkan header files
-include_directories(${Vulkan_INCLUDE_DIRS} / ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
 # Get all source files from the 'src' directory
-file(GLOB SOURCES src/*.c)
+file(GLOB_RECURSE SOURCES src/*.c)
+
+# Include Vulkan header files and custom include directory
+include_directories(${Vulkan_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Check if GLFW submodule exists, and clone it if missing
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/CMakeLists.txt)
