@@ -28,10 +28,12 @@ int check_for_validation_layers_support ()
         }
         if (!found) {
             dprintf(2, "Missing validation layer : \"%s\"\n", validationLayers[i]);
+            free(available_layers);
             return CReturnFailure;
         }
     }
 
+    free(available_layers);
     return CReturnSuccess;
 }
 
@@ -58,10 +60,12 @@ int check_for_required_extentions_support ()
         }
         if (!found) {
             dprintf(2, "Failed to create vulkan instance : required extension \"%s\" not found.\n", required_extensions[i]);
+            free(available_extensions);
             return CReturnFailure;
         }
     }
 
+    free(available_extensions);
     return CReturnSuccess;
 }
 

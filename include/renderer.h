@@ -7,6 +7,7 @@
 typedef struct {
     GLFWwindow *window;
     VkInstance instance;
+    VkPhysicalDevice physical_device;
 } VKRenderer;
 
 /**
