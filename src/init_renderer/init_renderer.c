@@ -14,5 +14,8 @@ int init_renderer (VKRenderer *renderer)
     if (pick_physical_device(renderer) != CReturnSuccess)
         return CReturnFailure;
 
+    if (create_logical_device(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
     return CReturnSuccess;
 }

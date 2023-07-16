@@ -29,6 +29,7 @@ void destroy_renderer (VKRenderer *renderer)
     glfwDestroyWindow(renderer->window);
     glfwTerminate();
 
+    vkDestroyDevice(renderer->logical_device, NULL);
     vkDestroyInstance(renderer->instance, NULL);
 }
 
