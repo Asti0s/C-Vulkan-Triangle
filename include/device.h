@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <vulkan/vulkan_core.h>
 
 #include "renderer.h"
@@ -24,19 +25,14 @@ int rate_physical_device (VkPhysicalDevice device);
 int pick_physical_device (VKRenderer *renderer);
 
 /**
- * @brief Pick a queue family indice based on the given flag bits.
+ * @brief Picks the queue family indices for the application and stores
+ * them in the renderer struct.
  *
- * @param physical_device the physical device to look for the queue family.
- * device is stored.
- * @param flagBits the flag bits to look for. Can be :
- * VK_QUEUE_GRAPHICS_BIT,
- * VK_QUEUE_COMPUTE_BIT,
- * VK_QUEUE_TRANSFER_BIT,
- * VK_QUEUE_SPARSE_BINDING_BIT,
- * VK_QUEUE_PROTECTED_BIT.
- * @return uint32_t the indice of the queue family if successful, -1 otherwise.
+ * @param renderer pointer to the renderer struct where the queue family
+ * indices will be stored.
+ * @return int CReturnSuccess if successful, CReturnFailure otherwise.
  */
-uint32_t pick_queue_family_indice (VkPhysicalDevice physical_device, VkQueueFlagBits queueFlagBits);
+int pick_queue_family_indices (VKRenderer *renderer);
 
 /**
  * @brief Create a logical device object and put it in the renderer struct.

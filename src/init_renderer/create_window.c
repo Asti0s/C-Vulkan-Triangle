@@ -7,7 +7,8 @@ int create_window (VKRenderer *renderer)
     if (!glfwInit())
         return CReturnFailure;
 
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_NO_API);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     renderer->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Vulkan", NULL, NULL);
     if (!renderer->window)

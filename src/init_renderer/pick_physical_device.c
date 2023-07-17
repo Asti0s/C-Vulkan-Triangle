@@ -1,7 +1,6 @@
 #include "constants.h"
 #include "renderer.h"
 
-#include <vulkan/vulkan_core.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>

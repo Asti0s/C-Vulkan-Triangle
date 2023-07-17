@@ -30,6 +30,7 @@ void destroy_renderer (VKRenderer *renderer)
     glfwTerminate();
 
     vkDestroyDevice(renderer->logical_device, NULL);
+    vkDestroySurfaceKHR(renderer->instance, renderer->surface, NULL);
     vkDestroyInstance(renderer->instance, NULL);
 }
 

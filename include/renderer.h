@@ -4,12 +4,26 @@
 
 #include "GLFW/glfw3.h"
 
+/**
+ * @brief Struct that holds the queue family indices for the application.
+ */
+typedef struct {
+    int graphics;
+    int present;
+} queue_family_indices;
+
+/**
+ * @brief Struct that holds all of the necessary objects for the renderer.
+ */
 typedef struct {
     GLFWwindow *window;
     VkInstance instance;
     VkPhysicalDevice physical_device;
     VkDevice logical_device;
     VkQueue graphics_queue;
+    VkQueue present_queue;
+    VkSurfaceKHR surface;
+    queue_family_indices queue_family_indices;
 } VKRenderer;
 
 /**
