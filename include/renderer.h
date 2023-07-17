@@ -37,6 +37,10 @@ typedef struct {
     queue_family_indices queue_family_indices;
     swapchain_support_details swapchain_support_details;
     VkSwapchainKHR swapchain;
+    VkImage *swapchain_images;
+    uint32_t swapchain_images_count;
+    VkFormat swapchain_image_format;
+    VkExtent2D swapchain_extent;
 } VKRenderer;
 
 /**

@@ -97,19 +97,22 @@ int create_swapchain (VKRenderer *renderer)
     VkSurfaceFormatKHR surface_format = choose_surface_format(swapchain_support_details.formats, swapchain_support_details.formats_count);
     VkPresentModeKHR present_mode = choose_present_mode(swapchain_support_details.present_modes, swapchain_support_details.present_modes_count);
     VkExtent2D extent = choose_swap_extent(swapchain_support_details.capabilities);
-    uint32_t image_count = swapchain_support_details.capabilities.minImageCount + 1;
-    if (swapchain_support_details.capabilities.maxImageCount > 0 && image_count > swapchain_support_details.capabilities.maxImageCount)
-        image_count = swapchain_support_details.capabilities.maxImageCount;
+    renderer->swapchain_images_count = swapchain_support_details.capabilities.minImageCount + 1;
+    if (swapchain_support_details.capabilities.maxImageCount > 0 && renderer->swapchain_images_count > swapchain_support_details.capabilities.maxImageCount)
+        renderer->swapchain_images_count = swapchain_support_details.capabilities.maxImageCount;
+
+    renderer->swapchain_image_format = surface_format.format;
+    renderer->swapchain_extent = extent;
 
     if (EnableDebugMode)
-        printf("\nSwapchain image count: %d\n", image_count);
+        printf("\nSwapchain image count: %d\n", renderer->swapchain_images_count);
 
     VkSwapchainCreateInfoKHR swapchain_create_info = {0};
     swapchain_create_info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     swapchain_create_info.surface = renderer->surface;
     swapchain_create_info.presentMode = present_mode;
     swapchain_create_info.imageExtent = extent;
-    swapchain_create_info.minImageCount = image_count;
+    swapchain_create_info.minImageCount = renderer->swapchain_images_count;
     swapchain_create_info.imageFormat = surface_format.format;
     swapchain_create_info.imageColorSpace = surface_format.colorSpace;
     swapchain_create_info.imageArrayLayers = 1;
@@ -132,6 +135,9 @@ int create_swapchain (VKRenderer *renderer)
     }
 
     if (vkCreateSwapchainKHR(renderer->logical_device, &swapchain_create_info, NULL, &renderer->swapchain) != VK_SUCCESS)
+        return CReturnFailure;
+
+    if (vkGetSwapchainImagesKHR(renderer->logical_device, renderer->swapchain, &renderer->swapchain_images_count, NULL) != VK_SUCCESS)
         return CReturnFailure;
 
     free(swapchain_support_details.present_modes);
