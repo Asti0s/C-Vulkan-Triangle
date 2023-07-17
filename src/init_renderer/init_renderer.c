@@ -27,5 +27,8 @@ int init_renderer (VKRenderer *renderer)
     if (create_swapchain(renderer) != CReturnSuccess)
         return CReturnFailure;
 
+    if (create_image_views(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
     return CReturnSuccess;
 }

@@ -11,3 +11,4 @@ CTestTestfile.cmake
 _deps
 compile_flags.txt
 build/*
+project-time.json

@@ -88,6 +88,18 @@ VkExtent2D choose_swap_extent (VkSurfaceCapabilitiesKHR capabilities)
     }
 }
 
+int get_swapchain_images (VKRenderer *renderer)
+{
+    vkGetSwapchainImagesKHR(renderer->logical_device, renderer->swapchain, &renderer->swapchain_images_count, NULL);
+
+    renderer->swapchain_images = malloc(sizeof(VkImage) * renderer->swapchain_images_count);
+    if (renderer->swapchain_images == NULL)
+        return CReturnFailure;
+    vkGetSwapchainImagesKHR(renderer->logical_device, renderer->swapchain, &renderer->swapchain_images_count, renderer->swapchain_images);
+
+    return CReturnSuccess;
+}
+
 int create_swapchain (VKRenderer *renderer)
 {
     swapchain_support_details swapchain_support_details;
@@ -137,7 +149,7 @@ int create_swapchain (VKRenderer *renderer)
     if (vkCreateSwapchainKHR(renderer->logical_device, &swapchain_create_info, NULL, &renderer->swapchain) != VK_SUCCESS)
         return CReturnFailure;
 
-    if (vkGetSwapchainImagesKHR(renderer->logical_device, renderer->swapchain, &renderer->swapchain_images_count, NULL) != VK_SUCCESS)
+    if (get_swapchain_images(renderer) == CReturnFailure)
         return CReturnFailure;
 
     free(swapchain_support_details.present_modes);

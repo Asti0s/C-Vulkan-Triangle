@@ -22,3 +22,12 @@ VkSurfaceKHR surface, VkPhysicalDevice device);
  * successfully, CReturnFailure otherwise.
  */
 int create_swapchain (VKRenderer *renderer);
+
+/**
+ * @brief Create a image views object and store it in the renderer struct.
+ *
+ * @param renderer The renderer struct to store the image views object.
+ * @return int CReturnSuccess if the image views object was created successfully,
+ * CReturnFailure otherwise.
+ */
+int create_image_views (VKRenderer *renderer);

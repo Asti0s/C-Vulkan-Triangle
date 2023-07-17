@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 #include "constants.h"
 #include "renderer.h"
@@ -26,6 +28,11 @@ const char *validationLayers[] = {
 
 void destroy_renderer (VKRenderer *renderer)
 {
+    for (uint32_t i = 0; i < renderer->swapchain_images_count; i++)
+        vkDestroyImageView(renderer->logical_device, renderer->swapchain_image_views[i], NULL);
+    free(renderer->swapchain_image_views);
+    free(renderer->swapchain_images);
+
     vkDestroySwapchainKHR(renderer->logical_device, renderer->swapchain, NULL);
     vkDestroyDevice(renderer->logical_device, NULL);
     vkDestroySurfaceKHR(renderer->instance, renderer->surface, NULL);

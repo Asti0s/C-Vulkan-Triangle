@@ -41,6 +41,7 @@ typedef struct {
     uint32_t swapchain_images_count;
     VkFormat swapchain_image_format;
     VkExtent2D swapchain_extent;
+    VkImageView *swapchain_image_views;
 } VKRenderer;
 
 /**
