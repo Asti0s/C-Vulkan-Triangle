@@ -28,16 +28,18 @@ VkDeviceQueueCreateInfo *queue_create_info, const char *const *extension_names, 
 {
     device_create_info->sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     device_create_info->pQueueCreateInfos = queue_create_info;
+    device_create_info->pEnabledFeatures = device_features;
+    device_create_info->enabledExtensionCount = 1;
+    device_create_info->ppEnabledExtensionNames = extension_names;
 
+    // Check if graphics and present queue families are the same to avoid creating the same queue twice
     if (renderer->queue_family_indices.graphics == renderer->queue_family_indices.present)
         device_create_info->queueCreateInfoCount = 1;
     else
         device_create_info->queueCreateInfoCount = 2;
 
-    device_create_info->pEnabledFeatures = device_features;
-    device_create_info->enabledExtensionCount = 1;
-    device_create_info->ppEnabledExtensionNames = extension_names;
 
+    // Add validation layers if debug mode is enabled
     if (EnableDebugMode) {
         device_create_info->ppEnabledLayerNames = validationLayers;
         for (int i = 0; validationLayers[i] != NULL; i++)
@@ -53,8 +55,9 @@ void create_queues (VKRenderer *renderer)
     else
         renderer->present_queue = renderer->graphics_queue;
 
+    // Print debug info if enabled
     if (EnableDebugMode) {
-        printf("\nFamily queues indexes :\n");
+        printf("\nFamily queues indexes:\n");
         printf("- GRAPHIC: %d\n", renderer->queue_family_indices.graphics);
         printf("- PRESENT: %d\n", renderer->queue_family_indices.present);
     }

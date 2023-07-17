@@ -13,6 +13,17 @@ typedef struct {
 } queue_family_indices;
 
 /**
+ * @brief Struct that holds the swapchain support details for the application.
+ */
+typedef struct {
+    VkSurfaceCapabilitiesKHR capabilities;
+    VkSurfaceFormatKHR *formats;
+    VkPresentModeKHR *present_modes;
+    uint32_t formats_count;
+    uint32_t present_modes_count;
+} swapchain_support_details;
+
+/**
  * @brief Struct that holds all of the necessary objects for the renderer.
  */
 typedef struct {
@@ -24,6 +35,8 @@ typedef struct {
     VkQueue present_queue;
     VkSurfaceKHR surface;
     queue_family_indices queue_family_indices;
+    swapchain_support_details swapchain_support_details;
+    VkSwapchainKHR swapchain;
 } VKRenderer;
 
 /**

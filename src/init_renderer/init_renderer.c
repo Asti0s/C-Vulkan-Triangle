@@ -2,6 +2,7 @@
 #include "window.h"
 #include "instance.h"
 #include "device.h"
+#include "swapchain.h"
 
 int init_renderer (VKRenderer *renderer)
 {
@@ -21,6 +22,9 @@ int init_renderer (VKRenderer *renderer)
         return CReturnFailure;
 
     if (create_logical_device(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
+    if (create_swapchain(renderer) != CReturnSuccess)
         return CReturnFailure;
 
     return CReturnSuccess;

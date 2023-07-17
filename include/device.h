@@ -1,9 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <vulkan/vulkan_core.h>
-
 #include "renderer.h"
 
 /**

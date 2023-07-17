@@ -11,6 +11,7 @@ extern const bool EnableDebugMode;
 
 int check_for_validation_layers_support ()
 {
+    // Get available layers
     uint32_t layer_count = 0;
     vkEnumerateInstanceLayerProperties(&layer_count, NULL);
     VkLayerProperties *available_layers = malloc(sizeof(VkLayerProperties) * layer_count);
@@ -18,6 +19,7 @@ int check_for_validation_layers_support ()
         return CReturnFailure;
     vkEnumerateInstanceLayerProperties(&layer_count, available_layers);
 
+    // Compare validation layers with available layers
     for (int i = 0; validationLayers[i] != 0; i++) {
         int found = 0;
         for (uint32_t j = 0; j < layer_count; j++) {
@@ -42,14 +44,15 @@ int check_for_required_extentions_support ()
     uint32_t required_extension_count = 0;
     const char **required_extensions = glfwGetRequiredInstanceExtensions(&required_extension_count);
 
+    // Get available extensions
     uint32_t available_extension_count = 0;
     vkEnumerateInstanceExtensionProperties(NULL, &available_extension_count, NULL);
-    VkExtensionProperties *available_extensions =
-        malloc(sizeof(VkExtensionProperties) * available_extension_count);
+    VkExtensionProperties *available_extensions = malloc(sizeof(VkExtensionProperties) * available_extension_count);
     if (available_extensions == NULL)
         return CReturnFailure;
     vkEnumerateInstanceExtensionProperties(NULL, &available_extension_count, available_extensions);
 
+    // Compare required extensions with available extensions
     for (uint32_t i = 0; i < required_extension_count; i++) {
         int found = 0;
         for (uint32_t j = 0; j < available_extension_count; j++) {
@@ -85,6 +88,7 @@ int create_instance (VKRenderer *renderer)
     instance_info.ppEnabledExtensionNames =
         glfwGetRequiredInstanceExtensions(&instance_info.enabledExtensionCount);
 
+    // Enable validation layers if debug mode is enabled
     if (EnableDebugMode == true && check_for_validation_layers_support() == CReturnSuccess) {
         for (instance_info.enabledLayerCount = 0;
             validationLayers[instance_info.enabledLayerCount] != 0;

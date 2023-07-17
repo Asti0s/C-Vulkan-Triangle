@@ -26,12 +26,13 @@ const char *validationLayers[] = {
 
 void destroy_renderer (VKRenderer *renderer)
 {
-    glfwDestroyWindow(renderer->window);
-    glfwTerminate();
-
+    vkDestroySwapchainKHR(renderer->logical_device, renderer->swapchain, NULL);
     vkDestroyDevice(renderer->logical_device, NULL);
     vkDestroySurfaceKHR(renderer->instance, renderer->surface, NULL);
     vkDestroyInstance(renderer->instance, NULL);
+
+    glfwDestroyWindow(renderer->window);
+    glfwTerminate();
 }
 
 void main_loop (VKRenderer *renderer)
