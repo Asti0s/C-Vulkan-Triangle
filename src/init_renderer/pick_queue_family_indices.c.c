@@ -1,8 +1,12 @@
+#include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 #include "constants.h"
 #include "renderer.h"
+
+extern const bool EnableDebugMode;
 
 int pick_queue_family_indices (VKRenderer *renderer)
 {
@@ -28,6 +32,24 @@ int pick_queue_family_indices (VKRenderer *renderer)
         if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
             renderer->queue_family_indices.graphics = i;
 
+    }
+
+    if (EnableDebugMode) {
+        for (uint32_t i = 0; i < queueFamilyCount; i++) {
+            printf("\nQueue family %d:\n", i);
+            printf("- Count: %d\n", queueFamilies[i].queueCount);
+            printf("- Flags:\n");
+            if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+                printf(". VK_QUEUE_GRAPHICS_BIT\n");
+            if (queueFamilies[i].queueFlags & VK_QUEUE_COMPUTE_BIT)
+                printf(". VK_QUEUE_COMPUTE_BIT\n");
+            if (queueFamilies[i].queueFlags & VK_QUEUE_TRANSFER_BIT)
+                printf(". VK_QUEUE_TRANSFER_BIT\n");
+            if (queueFamilies[i].queueFlags & VK_QUEUE_SPARSE_BINDING_BIT)
+                printf(". VK_QUEUE_SPARSE_BINDING_BIT\n");
+            if (queueFamilies[i].queueFlags & VK_QUEUE_PROTECTED_BIT)
+                printf(". VK_QUEUE_PROTECTED_BIT\n");
+        }
     }
 
     free(queueFamilies);

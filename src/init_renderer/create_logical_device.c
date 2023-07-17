@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "constants.h"
 #include "device.h"
 
@@ -50,6 +52,12 @@ void create_queues (VKRenderer *renderer)
         vkGetDeviceQueue(renderer->logical_device, renderer->queue_family_indices.present, 0, &renderer->present_queue);
     else
         renderer->present_queue = renderer->graphics_queue;
+
+    if (EnableDebugMode) {
+        printf("\nFamily queues indexes :\n");
+        printf("- GRAPHIC: %d\n", renderer->queue_family_indices.graphics);
+        printf("- PRESENT: %d\n", renderer->queue_family_indices.present);
+    }
 }
 
 int create_logical_device (VKRenderer *renderer)
