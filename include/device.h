@@ -35,7 +35,8 @@ int pick_physical_device (VKRenderer *renderer);
 int pick_queue_family_indices (VKRenderer *renderer);
 
 /**
- * @brief Create a logical device object and put it in the renderer struct.
+ * @brief Creates the logical device and the queues for the application
+ * and stores them in the renderer struct.
  *
  * @param renderer pointer to the renderer struct where the logical
  * device will be stored.

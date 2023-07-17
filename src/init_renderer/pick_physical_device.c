@@ -1,11 +1,36 @@
 #include "constants.h"
 #include "renderer.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
 extern const bool EnableDebugMode;
+
+bool is_device_suitable (VkPhysicalDevice device, VkPhysicalDeviceProperties device_properties, VkPhysicalDeviceFeatures device_features)
+{
+    if (device_properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER ||
+    device_features.geometryShader == VK_FALSE)
+        return false;
+
+    uint32_t extension_count = 0;
+    vkEnumerateDeviceExtensionProperties(device, NULL, &extension_count, NULL);
+
+    VkExtensionProperties *available_extensions = malloc(sizeof(VkExtensionProperties) * extension_count);
+    if (available_extensions == NULL)
+        return 0;
+    vkEnumerateDeviceExtensionProperties(device, NULL, &extension_count, available_extensions);
+
+    for (uint32_t i = 0; i < extension_count; i++) {
+        if (strcmp(available_extensions[i].extensionName, VK_KHR_SWAPCHAIN_EXTENSION_NAME) == 0) {
+            free(available_extensions);
+            return true;
+        }
+    }
+
+    return false;
+}
 
 int rate_physical_device (VkPhysicalDevice device)
 {
@@ -15,8 +40,7 @@ int rate_physical_device (VkPhysicalDevice device)
     VkPhysicalDeviceFeatures device_features;
     vkGetPhysicalDeviceFeatures(device, &device_features);
 
-    if (device_properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER ||
-    device_features.geometryShader == VK_FALSE)
+    if (!is_device_suitable(device, device_properties, device_features))
         return 0;
 
     int score = device_properties.limits.maxImageDimension2D;
