@@ -62,6 +62,9 @@ int record_command_buffers (VKRenderer *renderer)
         vkCmdDraw(renderer->command_buffers[i], 3, 1, 0, 0);
 
         vkCmdEndRenderPass(renderer->command_buffers[i]);
+
+        if (vkEndCommandBuffer(renderer->command_buffers[i]) != VK_SUCCESS)
+            return CReturnFailure;
     }
 
     return CReturnSuccess;

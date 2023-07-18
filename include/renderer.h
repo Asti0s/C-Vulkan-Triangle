@@ -48,6 +48,8 @@ typedef struct {
     VkFramebuffer *swapchain_framebuffers;
     VkCommandPool command_pool;
     VkCommandBuffer *command_buffers;
+    VkSemaphore sm_image_available;
+    VkSemaphore sm_render_finished;
 } VKRenderer;
 
 /**
@@ -58,3 +60,10 @@ typedef struct {
  * @return int CReturnSuccess if successful, CReturnFailure otherwise.
  */
 int init_renderer (VKRenderer *renderer);
+
+/**
+ * @brief Frees all of the memory allocated by the renderer.
+ *
+ * @param renderer the renderer to free.
+ */
+void destroy_renderer (VKRenderer *renderer);

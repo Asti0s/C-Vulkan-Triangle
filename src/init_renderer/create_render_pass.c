@@ -26,6 +26,16 @@ int create_render_pass (VKRenderer *renderer)
     subpass.pColorAttachments = &color_attachment_ref;
 
 
+    // Subpass dependency
+    VkSubpassDependency dependency = {0};
+    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+    dependency.dstSubpass = 0;
+    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    dependency.srcAccessMask = 0;
+    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+
     // Render pass
     VkRenderPassCreateInfo render_pass_info = {0};
     render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
@@ -33,6 +43,8 @@ int create_render_pass (VKRenderer *renderer)
     render_pass_info.pAttachments = &color_attachment;
     render_pass_info.subpassCount = 1;
     render_pass_info.pSubpasses = &subpass;
+    render_pass_info.dependencyCount = 1;
+    render_pass_info.pDependencies = &dependency;
 
     if (vkCreateRenderPass(renderer->logical_device, &render_pass_info, NULL, &renderer->render_pass) != VK_SUCCESS)
         return CReturnFailure;

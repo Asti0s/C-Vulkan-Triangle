@@ -26,35 +26,55 @@ const char *validationLayers[] = {
     "VK_LAYER_KHRONOS_validation"
 };
 
-void destroy_renderer (VKRenderer *renderer)
+int draw_frame (VKRenderer *renderer)
 {
-    for (uint32_t i = 0; i < renderer->swapchain_images_count; i++) {
-        vkDestroyFramebuffer(renderer->logical_device, renderer->swapchain_framebuffers[i], NULL);
-        vkDestroyImageView(renderer->logical_device, renderer->swapchain_image_views[i], NULL);
-    }
-    free(renderer->swapchain_image_views);
-    free(renderer->swapchain_framebuffers);
-    free(renderer->command_buffers);
-    free(renderer->swapchain_images);
+    // Acquire
+    uint32_t image_index;
+    if (vkAcquireNextImageKHR(renderer->logical_device, renderer->swapchain, UINT64_MAX, renderer->sm_image_available, VK_NULL_HANDLE, &image_index) != VK_SUCCESS)
+        return CReturnFailure;
 
-    vkDestroyCommandPool(renderer->logical_device, renderer->command_pool, NULL);
-    vkDestroyPipelineLayout(renderer->logical_device, renderer->pipeline_layout, NULL);
-    vkDestroyRenderPass(renderer->logical_device, renderer->render_pass, NULL);
-    vkDestroyPipeline(renderer->logical_device, renderer->graphics_pipeline, NULL);
-    vkDestroySwapchainKHR(renderer->logical_device, renderer->swapchain, NULL);
-    vkDestroyDevice(renderer->logical_device, NULL);
-    vkDestroySurfaceKHR(renderer->instance, renderer->surface, NULL);
-    vkDestroyInstance(renderer->instance, NULL);
 
-    glfwDestroyWindow(renderer->window);
-    glfwTerminate();
+    // Submit
+    VkSubmitInfo submit_info = {0};
+    submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submit_info.waitSemaphoreCount = 1;
+    submit_info.commandBufferCount = 1;
+    submit_info.pCommandBuffers = &renderer->command_buffers[image_index];
+    submit_info.pWaitSemaphores = &renderer->sm_image_available;
+    submit_info.pWaitDstStageMask = (VkPipelineStageFlags[]) {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+    submit_info.signalSemaphoreCount = 1;
+    submit_info.pSignalSemaphores = &renderer->sm_render_finished;
+
+    if (vkQueueSubmit(renderer->graphics_queue, 1, &submit_info, VK_NULL_HANDLE) != VK_SUCCESS)
+        return CReturnFailure;
+
+
+    // Present
+    VkPresentInfoKHR present_info = {0};
+    present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+    present_info.waitSemaphoreCount = 1;
+    present_info.pWaitSemaphores = &renderer->sm_render_finished;
+    present_info.swapchainCount = 1;
+    present_info.pSwapchains = &renderer->swapchain;
+    present_info.pImageIndices = &image_index;
+
+    if (vkQueuePresentKHR(renderer->present_queue, &present_info) != VK_SUCCESS)
+        return CReturnFailure;
+
+    return CReturnSuccess;
 }
 
-void main_loop (VKRenderer *renderer)
+int main_loop (VKRenderer *renderer)
 {
     while (!glfwWindowShouldClose(renderer->window)) {
         glfwPollEvents();
+
+        if (draw_frame(renderer) == CReturnFailure)
+            return CReturnFailure;
     }
+
+    vkDeviceWaitIdle(renderer->logical_device);
+    return CReturnSuccess;
 }
 
 int main ()
