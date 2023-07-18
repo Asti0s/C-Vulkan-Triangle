@@ -41,5 +41,14 @@ int init_renderer (VKRenderer *renderer)
     if (create_framebuffers(renderer) != CReturnSuccess)
         return CReturnFailure;
 
+    if (create_command_pool(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
+    if (allocate_command_buffers(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
+    if (record_command_buffers(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
     return CReturnSuccess;
 }

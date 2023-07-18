@@ -46,6 +46,8 @@ typedef struct {
     VkRenderPass render_pass;
     VkPipeline graphics_pipeline;
     VkFramebuffer *swapchain_framebuffers;
+    VkCommandPool command_pool;
+    VkCommandBuffer *command_buffers;
 } VKRenderer;
 
 /**

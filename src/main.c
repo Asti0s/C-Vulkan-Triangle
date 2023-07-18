@@ -34,9 +34,10 @@ void destroy_renderer (VKRenderer *renderer)
     }
     free(renderer->swapchain_image_views);
     free(renderer->swapchain_framebuffers);
+    free(renderer->command_buffers);
     free(renderer->swapchain_images);
 
-
+    vkDestroyCommandPool(renderer->logical_device, renderer->command_pool, NULL);
     vkDestroyPipelineLayout(renderer->logical_device, renderer->pipeline_layout, NULL);
     vkDestroyRenderPass(renderer->logical_device, renderer->render_pass, NULL);
     vkDestroyPipeline(renderer->logical_device, renderer->graphics_pipeline, NULL);
