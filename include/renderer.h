@@ -42,6 +42,10 @@ typedef struct {
     VkFormat swapchain_image_format;
     VkExtent2D swapchain_extent;
     VkImageView *swapchain_image_views;
+    VkPipelineLayout pipeline_layout;
+    VkRenderPass render_pass;
+    VkPipeline graphics_pipeline;
+    VkFramebuffer *swapchain_framebuffers;
 } VKRenderer;
 
 /**

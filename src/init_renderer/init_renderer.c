@@ -1,8 +1,10 @@
 #include "constants.h"
+#include "renderer.h"
 #include "window.h"
 #include "instance.h"
 #include "device.h"
 #include "swapchain.h"
+#include "graphicsPipeline.h"
 
 int init_renderer (VKRenderer *renderer)
 {
@@ -28,6 +30,15 @@ int init_renderer (VKRenderer *renderer)
         return CReturnFailure;
 
     if (create_image_views(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
+    if (create_render_pass(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
+    if (create_graphics_pipeline(renderer) != CReturnSuccess)
+        return CReturnFailure;
+
+    if (create_framebuffers(renderer) != CReturnSuccess)
         return CReturnFailure;
 
     return CReturnSuccess;
