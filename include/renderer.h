@@ -48,8 +48,9 @@ typedef struct {
     VkFramebuffer *swapchain_framebuffers;
     VkCommandPool command_pool;
     VkCommandBuffer *command_buffers;
-    VkSemaphore sm_image_available;
-    VkSemaphore sm_render_finished;
+    VkSemaphore *sm_image_available;
+    VkSemaphore *sm_render_finished;
+    VkFence *in_flight_fences;
 } VKRenderer;
 
 /**
@@ -67,3 +68,19 @@ int init_renderer (VKRenderer *renderer);
  * @param renderer the renderer to free.
  */
 void destroy_renderer (VKRenderer *renderer);
+
+/**
+ * @brief Create the synchronization objects for the application.
+ *
+ * @param renderer the renderer to use.
+ * @return int CReturnSuccess if successful, CReturnFailure otherwise.
+ */
+int create_sync_objects (VKRenderer *renderer);
+
+/**
+ * @brief Executes the main loop of the application.
+ *
+ * @param renderer the renderer to use.
+ * @return int CReturnSuccess if successful, CReturnFailure otherwise.
+ */
+int main_loop (VKRenderer *renderer);

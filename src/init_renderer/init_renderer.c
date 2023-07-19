@@ -8,9 +8,6 @@
 
 int init_renderer (VKRenderer *renderer)
 {
-    VkSemaphoreCreateInfo semaphore_info = {0};
-    semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-
     if (create_window(renderer) != CReturnSuccess) return CReturnFailure;
     if (create_instance(renderer) != CReturnSuccess) return CReturnFailure;
     if (glfwCreateWindowSurface(renderer->instance, renderer->window, NULL, &renderer->surface) != VK_SUCCESS) return CReturnFailure;
@@ -25,8 +22,7 @@ int init_renderer (VKRenderer *renderer)
     if (create_command_pool(renderer) != CReturnSuccess) return CReturnFailure;
     if (allocate_command_buffers(renderer) != CReturnSuccess) return CReturnFailure;
     if (record_command_buffers(renderer) != CReturnSuccess) return CReturnFailure;
-    if (vkCreateSemaphore(renderer->logical_device, &semaphore_info, NULL, &renderer->sm_image_available) != VK_SUCCESS) return CReturnFailure;
-    if (vkCreateSemaphore(renderer->logical_device, &semaphore_info, NULL, &renderer->sm_render_finished) != VK_SUCCESS) return CReturnFailure;
+    if (create_sync_objects(renderer) != CReturnSuccess) return CReturnFailure;
 
     return CReturnSuccess;
 }
