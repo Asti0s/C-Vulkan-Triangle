@@ -47,6 +47,9 @@ VkSurfaceFormatKHR choose_surface_format (VkSurfaceFormatKHR *formats, uint32_t 
 
 VkPresentModeKHR choose_present_mode (VkPresentModeKHR *present_modes, uint32_t present_modes_count)
 {
+    // To avoid overconsumption of resources
+    return VK_PRESENT_MODE_FIFO_KHR;
+    
     for (uint32_t i = 0; i < present_modes_count; i++) {
         if (present_modes[i] == VK_PRESENT_MODE_MAILBOX_KHR) {
             // Debug info if enabled
