@@ -22,8 +22,17 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/CMakeLists.txt)
     execute_process(COMMAND git submodule update --init external/glfw WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()
 
+# Check if CGLM submodule exists, and clone it if missing
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/CMakeLists.txt)
+    message(STATUS "CGLM submodule not found. Cloning the submodule...")
+    execute_process(COMMAND git submodule update --init external/cglm WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
 # Add external libraries (GLFW)
 add_subdirectory(external/glfw)
+
+# Add external libraries (GLFW)
+add_subdirectory(external/cglm)
 
 # Create the executable for your project
 add_executable(VulkanTriangle ${SOURCES})
@@ -32,4 +41,4 @@ add_executable(VulkanTriangle ${SOURCES})
 set_source_files_properties(${SOURCES} PROPERTIES COMPILE_FLAGS "-g3 -Wall -Wextra")
 
 # Link Vulkan, and GLFW libraries to your executable
-target_link_libraries(VulkanTriangle ${Vulkan_LIBRARIES} glfw)
+target_link_libraries(VulkanTriangle ${Vulkan_LIBRARIES} glfw cglm)
