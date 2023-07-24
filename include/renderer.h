@@ -51,6 +51,7 @@ typedef struct {
     VkSemaphore *sm_image_available;
     VkSemaphore *sm_render_finished;
     VkFence *in_flight_fences;
+    int max_frames_in_flight;
 } VKRenderer;
 
 /**

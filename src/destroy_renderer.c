@@ -3,8 +3,6 @@
 
 #include "renderer.h"
 
-extern const int MAX_FRAMES_IN_FLIGHT;
-
 void destroy_renderer (VKRenderer *renderer)
 {
     vkDestroyCommandPool(renderer->logical_device, renderer->command_pool, NULL);
@@ -18,7 +16,7 @@ void destroy_renderer (VKRenderer *renderer)
     free(renderer->command_buffers);
     free(renderer->swapchain_images);
 
-    for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+    for (int i = 0; i < renderer->max_frames_in_flight; i++) {
         vkDestroySemaphore(renderer->logical_device, renderer->sm_image_available[i], NULL);
         vkDestroySemaphore(renderer->logical_device, renderer->sm_render_finished[i], NULL);
         vkDestroyFence(renderer->logical_device, renderer->in_flight_fences[i], NULL);

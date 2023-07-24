@@ -1,8 +1,6 @@
 #include "renderer.h"
 #include "constants.h"
 
-extern const int MAX_FRAMES_IN_FLIGHT;
-
 int render_image (VKRenderer *renderer, uint32_t image_index, int current_frame)
 {
     VkSubmitInfo submit_info = {0};
@@ -23,7 +21,6 @@ int render_image (VKRenderer *renderer, uint32_t image_index, int current_frame)
 
 int present_image (VKRenderer *renderer, uint32_t image_index, int current_frame)
 {
-    // Present
     VkPresentInfoKHR present_info = {0};
     present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     present_info.waitSemaphoreCount = 1;
@@ -54,7 +51,7 @@ int draw_frame (VKRenderer *renderer)
     if (present_image(renderer, image_index, current_frame) != CReturnSuccess)
         return CReturnFailure;
 
-    current_frame = (current_frame + 1) % MAX_FRAMES_IN_FLIGHT;
+    current_frame = (current_frame + 1) % renderer->max_frames_in_flight;
 
     return CReturnSuccess;
 }

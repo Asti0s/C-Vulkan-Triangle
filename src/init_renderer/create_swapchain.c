@@ -49,7 +49,7 @@ VkPresentModeKHR choose_present_mode (VkPresentModeKHR *present_modes, uint32_t 
 {
     // To avoid overconsumption of resources
     return VK_PRESENT_MODE_FIFO_KHR;
-    
+
     for (uint32_t i = 0; i < present_modes_count; i++) {
         if (present_modes[i] == VK_PRESENT_MODE_MAILBOX_KHR) {
             // Debug info if enabled
@@ -119,8 +119,14 @@ int create_swapchain (VKRenderer *renderer)
     renderer->swapchain_image_format = surface_format.format;
     renderer->swapchain_extent = extent;
 
-    if (EnableDebugMode)
+    renderer->max_frames_in_flight = 3;
+    if (renderer->max_frames_in_flight > (int) renderer->swapchain_images_count)
+        renderer->max_frames_in_flight = renderer->swapchain_images_count;
+
+    if (EnableDebugMode) {
         printf("\nSwapchain image count: %d\n", renderer->swapchain_images_count);
+        printf("Max frames in flight: %d\n", renderer->max_frames_in_flight);
+    }
 
     VkSwapchainCreateInfoKHR swapchain_create_info = {0};
     swapchain_create_info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
