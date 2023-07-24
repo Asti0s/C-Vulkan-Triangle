@@ -46,6 +46,8 @@ int record_command_buffers (VKRenderer *renderer)
         if (vkBeginCommandBuffer(renderer->command_buffers[i], &begin_info) != VK_SUCCESS)
             return CReturnFailure;
 
+
+        // Begin render pass
         VkRenderPassBeginInfo render_pass_info = {0};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
         render_pass_info.renderPass = renderer->render_pass;
@@ -57,10 +59,15 @@ int record_command_buffers (VKRenderer *renderer)
         render_pass_info.pClearValues = &clear_color;
         vkCmdBeginRenderPass(renderer->command_buffers[i], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
 
-        vkCmdBindPipeline(renderer->command_buffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, renderer->graphics_pipeline);
 
+        // Render triangle
+        vkCmdBindPipeline(renderer->command_buffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, renderer->graphics_pipeline);
+        VkDeviceSize offset = {0};
+        vkCmdBindVertexBuffers(renderer->command_buffers[i], 0, 1, &renderer->vertex_buffer, &offset);
         vkCmdDraw(renderer->command_buffers[i], 3, 1, 0, 0);
 
+
+        // End render pass
         vkCmdEndRenderPass(renderer->command_buffers[i]);
 
         if (vkEndCommandBuffer(renderer->command_buffers[i]) != VK_SUCCESS)

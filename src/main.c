@@ -24,6 +24,15 @@ const char *validationLayers[] = {
     "VK_LAYER_KHRONOS_validation"
 };
 
+/**
+ * @brief The vertices to use for the triangle.
+ */
+const vertex vertices[3] = {
+    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+};
+
 int main ()
 {
     VKRenderer renderer = {0};

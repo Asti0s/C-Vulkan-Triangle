@@ -2,6 +2,7 @@
 
 #include <vulkan/vulkan_core.h>
 
+#include "cglm/cglm.h"
 #include "GLFW/glfw3.h"
 
 /**
@@ -22,6 +23,14 @@ typedef struct {
     uint32_t formats_count;
     uint32_t present_modes_count;
 } swapchain_support_details;
+
+/**
+ * @brief Struct that holds the vertex data for the application.
+ */
+typedef struct {
+    vec2 pos;
+    vec3 color;
+} vertex;
 
 /**
  * @brief Struct that holds all of the necessary objects for the renderer.
@@ -52,6 +61,8 @@ typedef struct {
     VkSemaphore *sm_render_finished;
     VkFence *in_flight_fences;
     int max_frames_in_flight;
+    VkBuffer vertex_buffer;
+    VkDeviceMemory vertex_buffer_memory;
 } VKRenderer;
 
 /**
@@ -77,6 +88,14 @@ void destroy_renderer (VKRenderer *renderer);
  * @return int CReturnSuccess if successful, CReturnFailure otherwise.
  */
 int create_sync_objects (VKRenderer *renderer);
+
+/**
+ * @brief Create a vertex buffer object and copy the vertices into it.
+ *
+ * @param renderer the renderer to use.
+ * @return int CReturnSuccess if successful, CReturnFailure otherwise.
+ */
+int create_vertex_buffer (VKRenderer *renderer);
 
 /**
  * @brief Executes the main loop of the application.

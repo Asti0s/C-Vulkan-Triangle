@@ -19,6 +19,7 @@ int init_renderer (VKRenderer *renderer)
     if (create_render_pass(renderer) != CReturnSuccess) return CReturnFailure;
     if (create_graphics_pipeline(renderer) != CReturnSuccess) return CReturnFailure;
     if (create_framebuffers(renderer) != CReturnSuccess) return CReturnFailure;
+    if (create_vertex_buffer(renderer) != CReturnSuccess) return CReturnFailure;
     if (create_command_pool(renderer) != CReturnSuccess) return CReturnFailure;
     if (allocate_command_buffers(renderer) != CReturnSuccess) return CReturnFailure;
     if (record_command_buffers(renderer) != CReturnSuccess) return CReturnFailure;

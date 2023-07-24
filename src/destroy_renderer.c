@@ -25,6 +25,8 @@ void destroy_renderer (VKRenderer *renderer)
     free(renderer->sm_render_finished);
     free(renderer->in_flight_fences);
 
+    vkDestroyBuffer(renderer->logical_device, renderer->vertex_buffer, NULL);
+    vkFreeMemory(renderer->logical_device, renderer->vertex_buffer_memory, NULL);
     vkDestroyPipelineLayout(renderer->logical_device, renderer->pipeline_layout, NULL);
     vkDestroyRenderPass(renderer->logical_device, renderer->render_pass, NULL);
     vkDestroyPipeline(renderer->logical_device, renderer->graphics_pipeline, NULL);
